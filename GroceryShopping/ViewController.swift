@@ -33,13 +33,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var typeBtn = dropDownBtn()
     var typeError = MyLabel()
     
+    var width: CGFloat = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor.white
         self.title = "Add Item To List"
         
-        
+        width = self.view.frame.width
         let margins = self.view.layoutMarginsGuide
         
         
@@ -52,7 +54,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         //adding the dropdown button
         typeBtn = dropDownBtn.init(frame: CGRect(x: 140, y: 300, width: 0, height: 0))
-        typeBtn.setTitle("Item Type", for: .normal)
+        typeBtn.setTitle("Item Type    \u{25BC}", for: .normal)
         typeBtn.translatesAutoresizingMaskIntoConstraints = false
         
         self.view.addSubview(typeBtn)
@@ -61,9 +63,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         //typeBtn.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         
         typeBtn.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 20).isActive = true
-        typeBtn.topAnchor.constraint(equalTo: margins.topAnchor, constant: 260).isActive = true
+        typeBtn.topAnchor.constraint(equalTo: margins.topAnchor, constant: 270).isActive = true
         
-        typeBtn.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        typeBtn.widthAnchor.constraint(equalToConstant: width * 0.8).isActive = true
         typeBtn.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         typeBtn.dropView.dropDownOptions = ["Fruits", "Vegetables", "Meats", "Dairy", "Grains", "Snacks", "Drinks", "Frozen", "Other"]
@@ -122,7 +124,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(itemField)
         itemField.leadingAnchor.constraint(equalTo: constraint.leadingAnchor, constant: 20).isActive = true
         itemField.topAnchor.constraint(equalTo: constraint.topAnchor, constant: 40).isActive = true
-        itemField.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        itemField.widthAnchor.constraint(equalToConstant: width * 0.8).isActive = true
         itemField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         itemField.text = "Item Name"
         
@@ -131,7 +133,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(itemError)
         itemError.leadingAnchor.constraint(equalTo: constraint.leadingAnchor, constant: 20).isActive = true
         itemError.topAnchor.constraint(equalTo: constraint.topAnchor, constant: 120).isActive = true
-        itemError.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        itemError.widthAnchor.constraint(equalToConstant: width * 0.8).isActive = true
         itemError.heightAnchor.constraint(equalToConstant: 40).isActive = true
         itemError.text = "Please enter item name."
         itemError.textColor = .red
@@ -143,7 +145,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(quantityField)
         quantityField.leadingAnchor.constraint(equalTo: constraint.leadingAnchor, constant: 20).isActive = true
         quantityField.topAnchor.constraint(equalTo: constraint.topAnchor, constant: 150).isActive = true
-        quantityField.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        quantityField.widthAnchor.constraint(equalToConstant: width * 0.8).isActive = true
         quantityField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         quantityField.text = "Quantity"
         
@@ -152,7 +154,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(typeError)
         typeError.leadingAnchor.constraint(equalTo: constraint.leadingAnchor, constant: 20).isActive = true
         typeError.topAnchor.constraint(equalTo: constraint.topAnchor, constant: 300).isActive = true
-        typeError.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        typeError.widthAnchor.constraint(equalToConstant: width * 0.8).isActive = true
         typeError.heightAnchor.constraint(equalToConstant: 40).isActive = true
         typeError.text = "Select item type from dropdown."
         typeError.textColor = .red
@@ -169,7 +171,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         myItem.leadingAnchor.constraint(equalTo: constraint.leadingAnchor, constant: 20).isActive = true
         myItem.topAnchor.constraint(equalTo: constraint.topAnchor, constant: 80).isActive = true
         //myItem.trailingAnchor.constraint(equalTo: constraint.trailingAnchor).isActive = true
-        myItem.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        myItem.widthAnchor.constraint(equalToConstant: width * 0.8).isActive = true
         myItem.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         myQuantity = MyTextField.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
@@ -179,7 +181,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         myQuantity.leadingAnchor.constraint(equalTo: constraint.leadingAnchor, constant: 20).isActive = true
         myQuantity.topAnchor.constraint(equalTo: constraint.topAnchor, constant: 190).isActive = true
         //myItem.trailingAnchor.constraint(equalTo: constraint.trailingAnchor).isActive = true
-        myQuantity.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        myQuantity.widthAnchor.constraint(equalToConstant: width * 0.8).isActive = true
         myQuantity.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
     }
@@ -233,7 +235,7 @@ class MyTextField: UITextField {
         
     }
     
-    
+    // adding padding in from of the text, this way there is a bit of space between the border and the text
     let padding = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
 
     override func textRect(forBounds bounds: CGRect) -> CGRect {
