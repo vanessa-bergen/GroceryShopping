@@ -22,6 +22,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     //labels
     var itemField = MyLabel()
+    var itemError = MyLabel()
     var quantityField = MyLabel()
     
     //textfields
@@ -30,11 +31,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     //dropdown button
     var typeBtn = dropDownBtn()
+    var typeError = MyLabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.red
+        view.backgroundColor = UIColor.white
         self.title = "Add Item To List"
         
         
@@ -81,17 +83,31 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func saveItem() {
-        print("saved")
-        let item = myItem.text ?? ""
-        let itemType = typeBtn.titleLabel?.text
-        print(itemType!)
         
-        let sectionNum = groceryTypes[itemType!]!
-        //default the quantity to 1 if the user doesn't enter anything
-        guard let quantity = Int(myQuantity.text!) else {
-            os_log("The value entered for quantity is not valid", log: OSLog.default, type: .debug)
+        guard let item = myItem.text, !item.isEmpty else {
+            // if myItem.text is empty, the itemError will be shown
+            itemError.isHidden = false
             return
         }
+        
+        guard let itemType = typeBtn.titleLabel?.text else {
+            // if no type is selected, the type error will be shown
+            typeError.isHidden = false
+            return
+        }
+        
+        
+        guard let sectionNum = groceryTypes[itemType] else {
+           print("item type \(itemType)")
+            return
+        }
+        //default the quantity to 1 if the user doesn't enter anything
+//        guard let quantity = Int(myQuantity.text ?? "1") else {
+//            //os_log("The value entered for quantity is not valid", log: OSLog.default, type: .debug)
+//            print("no qunatity")
+//            return
+//        }
+        let quantity = Int(myQuantity.text ?? "1") ?? 1
         
         let grocery = GroceryItem(listItem: item, quantity: quantity, type: sectionNum)
         delegate?.addItem(groceryItem: grocery!)
@@ -103,14 +119,24 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         itemField = MyLabel.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         itemField.translatesAutoresizingMaskIntoConstraints = false
-        
-        
         self.view.addSubview(itemField)
         itemField.leadingAnchor.constraint(equalTo: constraint.leadingAnchor, constant: 20).isActive = true
         itemField.topAnchor.constraint(equalTo: constraint.topAnchor, constant: 40).isActive = true
         itemField.widthAnchor.constraint(equalToConstant: 150).isActive = true
         itemField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         itemField.text = "Item Name"
+        
+        itemError = MyLabel.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        itemError.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(itemError)
+        itemError.leadingAnchor.constraint(equalTo: constraint.leadingAnchor, constant: 20).isActive = true
+        itemError.topAnchor.constraint(equalTo: constraint.topAnchor, constant: 120).isActive = true
+        itemError.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        itemError.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        itemError.text = "Please enter item name."
+        itemError.textColor = .red
+        itemError.font = itemError.font.withSize(18)
+        itemError.isHidden = true
         
         quantityField = MyLabel.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         quantityField.translatesAutoresizingMaskIntoConstraints = false
@@ -120,6 +146,18 @@ class ViewController: UIViewController, UITextFieldDelegate {
         quantityField.widthAnchor.constraint(equalToConstant: 150).isActive = true
         quantityField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         quantityField.text = "Quantity"
+        
+        typeError = MyLabel.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        typeError.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(typeError)
+        typeError.leadingAnchor.constraint(equalTo: constraint.leadingAnchor, constant: 20).isActive = true
+        typeError.topAnchor.constraint(equalTo: constraint.topAnchor, constant: 300).isActive = true
+        typeError.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        typeError.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        typeError.text = "Select item type from dropdown."
+        typeError.textColor = .red
+        typeError.font = typeError.font.withSize(18)
+        typeError.isHidden = true
         
     }
     
@@ -193,6 +231,21 @@ class MyTextField: UITextField {
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColor(red: 0.1922, green: 0.1882, blue: 0.498, alpha: 1.0).cgColor
         
+    }
+    
+    
+    let padding = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+
+    override func textRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
+
+    override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
+
+    override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
     }
 }
 
